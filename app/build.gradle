@@ -1,0 +1,136 @@
+group = APP_GROUP_ID
+version = getEnvValue("versionName", rootProject.ext.android.versionName);
+def apVersion = getEnvValue("apVersion", "");
+
+apply plugin: 'com.android.application'
+apply plugin: 'com.taobao.atlas'
+
+android {
+    compileSdkVersion rootProject.ext.android.compileSdkVersion
+    buildToolsVersion rootProject.ext.android.buildToolsVersion
+    defaultConfig {
+        applicationId rootProject.ext.android.applicationId
+        minSdkVersion rootProject.ext.android.minSdkVersion
+        targetSdkVersion rootProject.ext.android.targetSdkVersion
+        versionCode rootProject.ext.android.versionCode
+        versionName version
+        testInstrumentationRunner rootProject.ext.android.testRunner
+
+        externalNativeBuild {
+            cmake {
+                cppFlags ""
+            }
+        }
+        ndk {
+            abiFilters "x86", "armeabi"
+        }
+    }
+    /* externalNativeBuild {
+         cmake {
+             path "CMakeLists.txt"
+         }
+     }*/
+
+    //签名
+    signingConfigs {
+        config {
+            keyAlias rootProject.ext.signConfig.keyAlias
+            keyPassword rootProject.ext.signConfig.keyPassword
+            storeFile file('keystore.jks')
+            storePassword rootProject.ext.signConfig.storePassword
+            v2SigningEnabled rootProject.ext.signConfig.v2SigningEnabled
+        }
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled rootProject.ext.releaseConfig.minifyEnabled
+            debuggable rootProject.ext.releaseConfig.debuggable
+            signingConfig signingConfigs.config
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
+    testCompile 'junit:junit:4.12'
+
+    compile rootProject.ext.dep.constraint_layout
+
+    compile(rootProject.ext.dep.atlas_core)
+            {
+                transitive = true
+            }
+    compile rootProject.ext.dep.atlas_update
+    compile rootProject.ext.dep.fastjson
+
+    //项目依赖
+    compile project(':lib-base')
+    bundleCompile project(':bundle-home')
+    bundleCompile project(':bundle-login')
+}
+
+
+def typeName = project.hasProperty('type') ? project.property('type') : 'debug'
+
+//加入以下配置
+atlas {
+    atlasEnabled true
+    tBuildConfig {
+//        autoStartBundles = ['com.omd.home']
+        outOfApkBundles = ['bundle-login']
+        preLaunch = 'com.omd.AtlasLaunch'
+    }
+    patchConfigs {
+        debug {
+            createTPatch true
+        }
+    }
+    buildTypes {
+        debug {
+            if (apVersion) {
+                baseApDependency "com.omd.app:AP-$typeName:${apVersion}@ap"
+                patchConfig patchConfigs.debug
+            }
+        }
+    }
+}
+
+String getEnvValue(key, defValue) {
+    def val = System.getProperty(key);
+    if (null != val) {
+        return val;
+    }
+    val = System.getenv(key);
+    if (null != val) {
+        return val;
+    }
+    return defValue;
+}
+
+apply plugin: 'maven'
+apply plugin: 'maven-publish'
+
+publishing {
+    // 指定仓库位置
+    repositories {
+        mavenLocal()
+//        maven { url '~/.m2/repository/omd' }
+    }
+
+    publications {
+        // 默认本地仓库地址  用户目录/.m2/repository/
+        maven(MavenPublication) {
+            //读取ap目录上传maven
+            artifact "${project.buildDir}/outputs/apk/${project.name}-${typeName}.ap"
+            //生成本地maven目录
+            artifactId "AP-${typeName}"
+            print "typeName:$typeName"
+        }
+    }
+}

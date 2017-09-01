@@ -1,0 +1,69 @@
+ext {
+
+    signConfig = [
+            keyAlias        : 'BookCoterie',
+            keyPassword     : 'onedream2017',
+            storeFile       : 'keystore.jks',
+            storePassword   : 'onedream2017',
+            v2SigningEnabled: false
+    ]
+
+    debugConfig = [
+            minifyEnabled  : false,
+            debuggable     : true,
+            //Zipalign优化
+            zipAlignEnabled: false,
+            //zmq高德测试用的key
+            GAODE_APIKEY   : '2925fb0d1c781fe5a1d7cbb4829e992c',
+            //开启日志输出
+            DEBUG_MODE     : 'true'
+    ]
+
+    releaseConfig = [
+            //开启混淆
+            minifyEnabled  : true,
+            //去除无用资源,谨慎使用,如果反射使用某资源可能会报错。
+            shrinkResources: false,
+            //Zipalign优化
+            zipAlignEnabled: true,
+            debuggable     : false, //可以不用设置默认值就为false
+            //高德正式key
+            GAODE_APIKEY   : "3c90d0c23226794a42748f441ceccbdf",
+            //关闭日志输出
+            DEBUG_MODE     : "false"
+    ]
+
+    android = [
+            compileSdkVersion: 26,
+            buildToolsVersion: '26.0.0',
+            applicationId    : 'com.omd',
+            minSdkVersion    : 16,
+            targetSdkVersion : 26,
+            versionCode      : 1,
+            versionName      : APP_VERSION,
+            loadDebugRes     : false,
+            testRunner       : 'android.support.test.runner.AndroidJUnitRunner'
+
+    ]
+
+    def android_support_version = '26.+'
+
+
+    dep = [
+            support_v4        : 'com.android.support:support-v4:' + android_support_version,
+            support_v7        : 'com.android.support:appcompat-v7:' + android_support_version,
+            cardview          : 'com.android.support:cardview-v7:' + android_support_version,
+            recyclerview      : 'com.android.support:recyclerview-v7:' + android_support_version,
+            design            : 'com.android.support:design:' + android_support_version,
+            constraint_layout : 'com.android.support.constraint:constraint-layout:+',
+            fastjson          : 'com.alibaba:fastjson:+',
+
+            //atlas
+            atlas_core        : 'com.taobao.android:atlas_core:+',
+            atlas_update      : 'com.taobao.android:atlasupdate:+'
+
+    ]
+}
+
+
+
