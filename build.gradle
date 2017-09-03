@@ -12,6 +12,7 @@ buildscript {
 
     dependencies {
         classpath "com.taobao.android:atlasplugin:+"
+        classpath "com.antfortune.freeline:gradle:+"
     }
 
 }

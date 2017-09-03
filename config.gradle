@@ -13,8 +13,6 @@ ext {
             debuggable     : true,
             //Zipalign优化
             zipAlignEnabled: false,
-            //zmq高德测试用的key
-            GAODE_APIKEY   : '2925fb0d1c781fe5a1d7cbb4829e992c',
             //开启日志输出
             DEBUG_MODE     : 'true'
     ]
@@ -27,8 +25,6 @@ ext {
             //Zipalign优化
             zipAlignEnabled: true,
             debuggable     : false, //可以不用设置默认值就为false
-            //高德正式key
-            GAODE_APIKEY   : "3c90d0c23226794a42748f441ceccbdf",
             //关闭日志输出
             DEBUG_MODE     : "false"
     ]
@@ -50,20 +46,22 @@ ext {
 
 
     dep = [
-            support_v4        : 'com.android.support:support-v4:' + android_support_version,
-            support_v7        : 'com.android.support:appcompat-v7:' + android_support_version,
-            cardview          : 'com.android.support:cardview-v7:' + android_support_version,
-            recyclerview      : 'com.android.support:recyclerview-v7:' + android_support_version,
-            design            : 'com.android.support:design:' + android_support_version,
-            constraint_layout : 'com.android.support.constraint:constraint-layout:+',
-            fastjson          : 'com.alibaba:fastjson:+',
+            support_v4       : 'com.android.support:support-v4:' + android_support_version,
+            support_v7       : 'com.android.support:appcompat-v7:' + android_support_version,
+            cardview         : 'com.android.support:cardview-v7:' + android_support_version,
+            recyclerview     : 'com.android.support:recyclerview-v7:' + android_support_version,
+            design           : 'com.android.support:design:' + android_support_version,
+            constraint_layout: 'com.android.support.constraint:constraint-layout:+',
+            fastjson         : 'com.alibaba:fastjson:+',
 
             //atlas
-            atlas_core        : 'com.taobao.android:atlas_core:+',
-            atlas_update      : 'com.taobao.android:atlasupdate:+'
+            atlas_core       : 'com.taobao.android:atlas_core:+',
+            atlas_update     : 'com.taobao.android:atlasupdate:+',
+
 
     ]
 }
+
 
 
 
