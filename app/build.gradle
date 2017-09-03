@@ -2,8 +2,16 @@ group = APP_GROUP_ID
 version = getEnvValue("versionName", rootProject.ext.android.versionName);
 def apVersion = getEnvValue("apVersion", "");
 
+static def getDate() {
+    def date = new Date()
+    def formattedDate = date.format('yyyyMMdd')
+    return formattedDate
+}
+
 apply plugin: 'com.android.application'
 apply plugin: 'com.taobao.atlas'
+apply plugin: 'com.antfortune.freeline'
+
 
 android {
     compileSdkVersion rootProject.ext.android.compileSdkVersion
@@ -49,16 +57,59 @@ android {
             signingConfig signingConfigs.config
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+
+
         }
+    }
+
+    flavorDimensions "develop"
+    productFlavors {
+        // stage
+        stage {
+            dimension "develop"
+        }
+    }
+
+    freeline {
+        hack true
+        //如果配置了多Flavor，可以在这里指定编译的Flavor
+        productFlavor "stage"
+    }
+}
+
+//修改生成的apk名字及输出文件夹
+android.applicationVariants.all { variant ->
+    variant.outputs.each { output ->
+        //新名字
+        def newName
+        //时间戳
+        def timeNow
+        //输出文件夹
+        def outDirectory
+        //是否为Jenkins打包，输出路径不同
+        if ("true" == IS_JENKINS) {
+            //BUILD_PATH为服务器输出路径
+            timeNow = BUILD_TIME
+            outDirectory = BUILD_PATH_JENKINS
+            newName = APP_NAME + "_v" + APP_VERSION + '_' + variant.productFlavors[0].name + '_' + variant.buildType.name + '.apk'
+        } else {
+            //本机打包输出在本机路径
+            timeNow = getDate()
+            //本机打包输出在本机路径
+            outDirectory = output.outputFile.getParent()
+            if ('debug' == variant.buildType.name) {
+                newName = "${APP_NAME}_v${APP_VERSION}-${variant.buildType.name}.apk"
+            } else {
+                outDirectory = BUILD_PATH_LOCAL
+                newName = APP_NAME + "_v" + APP_VERSION + '_' + variant.productFlavors[0].name + '_' + variant.buildType.name + '.apk'
+            }
+        }
+        output.outputFile = new File(outDirectory + "/" + timeNow, newName)
     }
 }
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
-    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
-        exclude group: 'com.android.support', module: 'support-annotations'
-    })
-    testCompile 'junit:junit:4.12'
 
     compile rootProject.ext.dep.constraint_layout
 
@@ -90,6 +141,9 @@ atlas {
         debug {
             createTPatch true
         }
+        release {
+            createTPatch true
+        }
     }
     buildTypes {
         debug {
@@ -116,9 +170,11 @@ String getEnvValue(key, defValue) {
 apply plugin: 'maven'
 apply plugin: 'maven-publish'
 
+
 publishing {
     // 指定仓库位置
     repositories {
+        jcenter()
         mavenLocal()
 //        maven { url '~/.m2/repository/omd' }
     }
@@ -130,7 +186,6 @@ publishing {
             artifact "${project.buildDir}/outputs/apk/${project.name}-${typeName}.ap"
             //生成本地maven目录
             artifactId "AP-${typeName}"
-            print "typeName:$typeName"
         }
     }
 }
