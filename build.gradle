@@ -1,8 +1,8 @@
 apply from: "config.gradle"
 buildscript {
     repositories {
-        jcenter()
         mavenLocal()//本地maven
+        jcenter()
 /*        maven {
 //            url '~/.m2/repository/omd'
 //            url "http://192.168.102.255:8081/repository/maven-group/"
@@ -12,15 +12,14 @@ buildscript {
 
     dependencies {
         classpath "com.taobao.android:atlasplugin:+"
-        classpath "com.antfortune.freeline:gradle:+"
     }
 
 }
 
 allprojects {
     repositories {
-        jcenter()
         mavenLocal()//本地maven
+        jcenter()
 /*        maven {
 //            url '~/.m2/repository/omd'
             url "http://192.168.102.255:8081/repository/maven-group/"
@@ -30,22 +29,4 @@ allprojects {
 
 task clean(type: Delete) {
     delete rootProject.buildDir
-}
-
-def disableDebugBuild() {
-    //project.tasks包含了所有的tasks，下面的findAll是寻找那些名字中带debug的Task。
-    //返回值保存到targetTasks容器中
-    def targetTasks = project.tasks.findAll { task ->
-        task.name.contains("XXXX")
-    }
-    targetTasks.each {
-        println "disable debug task  :${it.name}"
-        it.setEnabled false
-    }
-}
-
-task disableDebugBuild
-
-project.afterEvaluate {
-    disableDebugBuild()
 }

@@ -1,0 +1,42 @@
+String getEnvValue(key, defValue) {
+    def val = System.getProperty(key);
+    if (null != val) {
+        return val;
+    }
+    val = System.getenv(key);
+    if (null != val) {
+        return val;
+    }
+    return defValue;
+}
+
+def getVersionNameAdvanced() {
+
+    def xmlFile = project.file("src/main/AndroidManifest.xml")
+    def rootManifest = new XmlSlurper().parse(xmlFile)
+    return rootManifest['@android:versionName']
+}
+
+def getDate() {
+    def date = new Date()
+    def formattedDate = date.format('yyyyMMdd')
+    return formattedDate
+}
+
+def disableDebugBuild() {
+
+    def targetTasks = project.tasks.findAll { task ->
+        task.name.contains("AndroidTest")
+    }
+    targetTasks.each {
+//        println "disable debug task  : ${it.name}"
+        it.setEnabled false
+    }
+}
+
+ext {
+    getEnvValue = this.&getEnvValue
+    getData = this.&getDate
+    getVersionNameAdvanced = this.&getVersionNameAdvanced
+    disableDebugBuild = this.&disableDebugBuild
+}
