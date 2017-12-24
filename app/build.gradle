@@ -63,10 +63,10 @@ android {
             signingConfig signingConfigs.config
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            buildConfigField "String", "API_URL", "release API_URL"
+            buildConfigField "String", "API_URL", "\"RELEASE_API_URL\""
         }
         debug {
-            buildConfigField "String", "API_URL", "debug API_URL"
+            buildConfigField "String", "API_URL", "\"DEBUG_API_URL\""
         }
     }
 
@@ -163,19 +163,14 @@ apply plugin: 'maven-publish'
 publishing {
     // 指定仓库位置
     repositories {
-//        mavenLocal()
-//        jcenter()
-
-        maven {
-//            url '~/.m2/repository/omd'
-            url RELEASE_REPOSITORY_URL
-        }
+        mavenLocal()
     }
 
     publications {
         maven(MavenPublication) {
+
             android.buildTypes.all { variant ->
-                if ("release" == variant.name) {
+                if ("debug" == variant.name) {
                     //读取ap目录上传maven
                     artifact "${project.buildDir}/outputs/apk/${APP_NAME}_v${APP_VERSION}_${variant.name}.ap"
                     //生成本地maven目录
