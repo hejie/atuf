@@ -1,7 +1,7 @@
 apply from: "../utils.gradle"
 group = APP_GROUP_ID
-version = getEnvValue("versionName", APP_VERSION);
-def apVersion = getEnvValue("apVersion", "");
+version = getEnvValue("versionName", APP_VERSION)
+def apVersion = getEnvValue("apVersion", "")
 
 
 
@@ -29,6 +29,13 @@ android {
             abiFilters "x86", "armeabi"
         }
     }
+    lintOptions {
+        abortOnError false
+    }
+    dataBinding {
+        enabled = true
+    }
+
     /* externalNativeBuild {
          cmake {
              path "CMakeLists.txt"
@@ -37,11 +44,14 @@ android {
 
     //签名
     signingConfigs {
+        def keystorePropertiesFile = rootProject.file("keystore.properties")
+        def keystoreProperties = new Properties()
+        keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
         config {
-            keyAlias rootProject.ext.signConfig.keyAlias
-            keyPassword rootProject.ext.signConfig.keyPassword
-            storeFile file('keystore.jks')
-            storePassword rootProject.ext.signConfig.storePassword
+            keyAlias keystoreProperties['keyAlias']
+            keyPassword keystoreProperties['keyPassword']
+            storeFile file(keystoreProperties['storeFile'])
+            storePassword keystoreProperties['storePassword']
             v2SigningEnabled rootProject.ext.signConfig.v2SigningEnabled
         }
     }
@@ -53,16 +63,16 @@ android {
             signingConfig signingConfigs.config
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            buildConfigField "String", "API_URL", "\"release API_URL\""
+            buildConfigField "String", "API_URL", "release API_URL"
         }
         debug {
-            buildConfigField "String", "API_URL", "\"debug API_URL\""
+            buildConfigField "String", "API_URL", "debug API_URL"
         }
     }
 
     flavorDimensions "channel"
     productFlavors {
-        omd {
+        dev {
             dimension "channel"
         }
         stage {
@@ -72,27 +82,22 @@ android {
 
 }
 
+def type = project.hasProperty('type') ? project.getProperty('type') : "debug"
+
 //修改生成的apk名字及输出文件夹
 android.applicationVariants.all { variant ->
     variant.outputs.each { output ->
         //新名字
         def newName
         //输出文件夹
-        def outDirectory
+        def outDirectory = output.outputFile.getParent()
         //是否为Jenkins打包，输出路径不同
-        if ("true" == IS_JENKINS) {
+        if ("jenkins" == type) {
             //BUILD_PATH为服务器输出路径
-            outDirectory = BUILD_PATH_JENKINS
+            outDirectory = BUILD_PATH_JENKINS + "/" + BUILD_TIME
             newName = APP_NAME + "_v" + APP_VERSION + '_' + variant.productFlavors[0].name + '_' + variant.buildType.name
         } else {
-            //本机打包输出在本机路径
-            outDirectory = output.outputFile.getParent()
-            if ('debug' == variant.buildType.name) {
-                newName = "${APP_NAME}_v${APP_VERSION}-${variant.buildType.name}"
-            } else {
-//                outDirectory = BUILD_PATH_LOCAL
-                newName = APP_NAME + "_v" + APP_VERSION + '_' + variant.productFlavors[0].name + '_' + variant.buildType.name
-            }
+            newName = APP_NAME + "_v" + APP_VERSION + '_' + variant.buildType.name
         }
         output.outputFile = new File(outDirectory, newName + '.apk')
     }
@@ -116,9 +121,6 @@ dependencies {
     bundleCompile project(':bundle-login')
 }
 
-
-def typeName = project.hasProperty('type') ? project.property('type') : 'debug'
-
 //加入以下配置
 atlas {
     atlasEnabled true
@@ -126,7 +128,12 @@ atlas {
 //        autoStartBundles = ['com.omd.home']
         outOfApkBundles = ['bundle-login']
         preLaunch = 'com.omd.AtlasLaunch'
+        classInject false
     }
+    manifestOptions {
+        addAtlasProxyComponents true
+    }
+
     patchConfigs {
         debug {
             createTPatch true
@@ -135,14 +142,16 @@ atlas {
             createTPatch true
         }
     }
-    buildTypes {
-        debug {
-            if (apVersion) {
-                baseApDependency "com.omd.app:ap-$typeName:${apVersion}@ap"
-                patchConfig patchConfigs.debug
-            }
+
+    android.buildTypes.all { variant ->
+        if (apVersion) {
+            baseApDependency "com.omd.app:ap-${variant.name}:${apVersion}@ap"
+            patchConfig patchConfigs.debug
         }
+
     }
+
+
 }
 
 
@@ -154,17 +163,26 @@ apply plugin: 'maven-publish'
 publishing {
     // 指定仓库位置
     repositories {
-        mavenLocal()
+//        mavenLocal()
 //        jcenter()
-//        maven { url '~/.m2/repository/omd' }
+
+        maven {
+//            url '~/.m2/repository/omd'
+            url RELEASE_REPOSITORY_URL
+        }
     }
 
     publications {
         maven(MavenPublication) {
-            //读取ap目录上传maven
-            artifact "${project.buildDir}/outputs/apk/${APP_NAME}_v${APP_VERSION}_omd_${typeName}.ap"
-            //生成本地maven目录
-            artifactId "ap-${typeName}"
+            android.buildTypes.all { variant ->
+                if ("release" == variant.name) {
+                    //读取ap目录上传maven
+                    artifact "${project.buildDir}/outputs/apk/${APP_NAME}_v${APP_VERSION}_${variant.name}.ap"
+                    //生成本地maven目录
+                    artifactId "ap-${variant.name}"
+                    print "-----------${variant.name}"
+                }
+            }
         }
     }
 }

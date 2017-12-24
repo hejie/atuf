@@ -1,11 +1,7 @@
 ext {
 
     signConfig = [
-            keyAlias        : 'BookCoterie',
-            keyPassword     : 'onedream2017',
-            storeFile       : 'keystore.jks',
-            storePassword   : 'onedream2017',
-            v2SigningEnabled: false
+            v2SigningEnabled: true
     ]
 
     debugConfig = [
@@ -30,19 +26,20 @@ ext {
     ]
 
     android = [
-            compileSdkVersion: 26,
-            buildToolsVersion: '26.0.0',
+            compileSdkVersion: 25,
+            buildToolsVersion: '25.0.0',
             applicationId    : 'com.omd',
             minSdkVersion    : 16,
-            targetSdkVersion : 26,
+            targetSdkVersion : 25,
             versionCode      : 1,
             versionName      : APP_VERSION,
             loadDebugRes     : false,
+            vectorDrawables  : true,
             testRunner       : 'android.support.test.runner.AndroidJUnitRunner'
 
     ]
 
-    def android_support_version = '26.+'
+    def android_support_version = '25.+'
 
 
     dep = [

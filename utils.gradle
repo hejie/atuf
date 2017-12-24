@@ -1,13 +1,13 @@
 String getEnvValue(key, defValue) {
-    def val = System.getProperty(key);
+    def val = System.getProperty(key)
     if (null != val) {
-        return val;
+        return val
     }
-    val = System.getenv(key);
+    val = System.getenv(key)
     if (null != val) {
-        return val;
+        return val
     }
-    return defValue;
+    return defValue
 }
 
 def getVersionNameAdvanced() {
@@ -18,9 +18,7 @@ def getVersionNameAdvanced() {
 }
 
 def getDate() {
-    def date = new Date()
-    def formattedDate = date.format('yyyyMMdd')
-    return formattedDate
+    return new Date().format("yyyy-MM-dd-HH-mm", TimeZone.getTimeZone("UTC"))
 }
 
 def disableDebugBuild() {
@@ -36,7 +34,7 @@ def disableDebugBuild() {
 
 ext {
     getEnvValue = this.&getEnvValue
-    getData = this.&getDate
+    getDate = this.&getDate
     getVersionNameAdvanced = this.&getVersionNameAdvanced
     disableDebugBuild = this.&disableDebugBuild
 }

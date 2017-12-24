@@ -1,13 +1,13 @@
 apply from: "config.gradle"
 buildscript {
     repositories {
-        mavenLocal()//本地maven
+//        mavenLocal()//本地maven
         jcenter()
-/*        maven {
+        maven {
 //            url '~/.m2/repository/omd'
-//            url "http://192.168.102.255:8081/repository/maven-group/"
-
-        }*/
+//            url 'http://maven.aliyun.com/nexus/content/groups/public'
+            url RELEASE_REPOSITORY_URL
+        }
     }
 
     dependencies {
@@ -18,12 +18,14 @@ buildscript {
 
 allprojects {
     repositories {
-        mavenLocal()//本地maven
+//        mavenLocal()//本地maven
         jcenter()
-/*        maven {
+        maven {
 //            url '~/.m2/repository/omd'
-            url "http://192.168.102.255:8081/repository/maven-group/"
-        }*/
+//            url 'http://maven.aliyun.com/nexus/content/groups/public'
+            url RELEASE_REPOSITORY_URL
+        }
+
     }
 }
 
