@@ -17,7 +17,7 @@ import java.io.File;
 
 
 
-public class DemoApplication extends Application {
+public class AppApplication extends Application {
 
     @Override
     public void onCreate() {
