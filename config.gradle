@@ -52,8 +52,8 @@ ext {
             fastjson         : 'com.alibaba:fastjson:+',
 
             //atlas
-            atlas_core       : 'com.taobao.android:atlas_core:+',
-            atlas_update     : 'com.taobao.android:atlasupdate:+',
+            atlas_core       : 'com.taobao.android:atlas_core:5.0.8.0-rc7@aar',
+            atlas_update     : 'com.taobao.android:atlasupdate:1.1.4.14@aar'
 
 
     ]

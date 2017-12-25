@@ -11,7 +11,7 @@ buildscript {
     }
 
     dependencies {
-        classpath "com.taobao.android:atlasplugin:+"
+        classpath "com.taobao.android:atlasplugin:2.3.3.rc41"
     }
 
 }
@@ -24,7 +24,6 @@ subprojects {
 //            url 'http://maven.aliyun.com/nexus/content/groups/public'
             url RELEASE_REPOSITORY_URL
         }
-
     }
 }
 
