@@ -11,7 +11,7 @@ echo "(2)  重新构建apk， 生成patch 包"
 
 
 echo "(3) 上传 tpatch"
-adb push ./app/build/outputs/tpatch-debug/update-*.json /sdcard/Android/data/com.omd/cache/update.json
-adb push ./app/build/outputs/tpatch-debug/patch-*.tpatch /sdcard/Android/data/com.omd/cache
+adb push ./build/outputs/tpatch-devDebug/update-*.json /sdcard/Android/data/com.omd/cache/update.json
+adb push ./build/outputs/tpatch-devDebug/patch-*.tpatch /sdcard/Android/data/com.omd/cache
 
 echo "(4) 点击动态部署完成安装 "
