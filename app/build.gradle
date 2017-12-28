@@ -123,7 +123,7 @@ repositories {
 atlas {
     atlasEnabled true
     tBuildConfig {
-//        autoStartBundles = ['com.omd.home']
+        autoStartBundles = ['com.omd.home']
         outOfApkBundles = ['bundle-login']
         classInject false
     }
