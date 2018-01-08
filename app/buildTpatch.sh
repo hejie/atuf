@@ -5,7 +5,7 @@ echo "    修改App工程源码"
 echo "    修改versionName"
 
 
-echo "(2)  重新构建apk， 生成patch 包"
+echo "(2)  重新构建apk， 生成patch 包  --info --debug"
 
 ../gradlew clean assembleDebug -DapVersion=1.0.0 -DversionName=1.0.1 --stacktrace
 
