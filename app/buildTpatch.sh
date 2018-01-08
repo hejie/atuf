@@ -10,7 +10,7 @@ echo "(2)  重新构建apk， 生成patch 包"
 ../gradlew clean assembleDebug -DapVersion=1.0.0 -DversionName=1.0.1 --stacktrace
 
 
-echo "(3) 上传 tpatch"
+echo "(3) 上传 patch"
 adb push ./build/outputs/tpatch-devDebug/update-*.json /sdcard/Android/data/com.omd/cache/update.json
 adb push ./build/outputs/tpatch-devDebug/patch-*.tpatch /sdcard/Android/data/com.omd/cache
 
