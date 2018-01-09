@@ -10,16 +10,16 @@ group = BUNDLE_GROUP_ID
 version = LOGIN_VERSION
 
 android {
-    compileSdkVersion rootProject.ext.android.compileSdkVersion
-    buildToolsVersion rootProject.ext.android.buildToolsVersion
+    compileSdkVersion androidConfig.compileSdkVersion
+    buildToolsVersion androidConfig.buildToolsVersion
 
     defaultConfig {
-        minSdkVersion rootProject.ext.android.minSdkVersion
-        targetSdkVersion rootProject.ext.android.targetSdkVersion
-        versionCode rootProject.ext.android.versionCode
+        minSdkVersion androidConfig.minSdkVersion
+        targetSdkVersion androidConfig.targetSdkVersion
+        versionCode androidConfig.versionCode
         versionName version
 
-        testInstrumentationRunner rootProject.ext.android.testRunner
+        testInstrumentationRunner androidConfig.testRunner
 
     }
     buildTypes {
@@ -35,6 +35,6 @@ dependencies {
 
     providedCompile project(':lib-base')
 
-    providedCompile rootProject.ext.dep.atlas_core
+    providedCompile dep.atlas_core
 
 }

@@ -10,16 +10,16 @@ apply plugin: 'com.taobao.atlas'
 
 
 android {
-    compileSdkVersion rootProject.ext.android.compileSdkVersion
-    buildToolsVersion rootProject.ext.android.buildToolsVersion
+    compileSdkVersion androidConfig.compileSdkVersion
+    buildToolsVersion androidConfig.buildToolsVersion
     defaultConfig {
-        applicationId rootProject.ext.android.applicationId
-        minSdkVersion rootProject.ext.android.minSdkVersion
-        targetSdkVersion rootProject.ext.android.targetSdkVersion
-        versionCode rootProject.ext.android.versionCode
+        applicationId androidConfig.applicationId
+        minSdkVersion androidConfig.minSdkVersion
+        targetSdkVersion androidConfig.targetSdkVersion
+        versionCode androidConfig.versionCode
         versionName version
-        vectorDrawables.useSupportLibrary = rootProject.ext.android.vectorDrawables
-        testInstrumentationRunner rootProject.ext.android.testRunner
+        vectorDrawables.useSupportLibrary = androidConfig.vectorDrawables
+        testInstrumentationRunner androidConfig.testRunner
 
         externalNativeBuild {
             cmake {
@@ -49,14 +49,14 @@ android {
             keyPassword keystoreProperties['keyPassword']
             storeFile file(keystoreProperties['storeFile'])
             storePassword keystoreProperties['storePassword']
-            v2SigningEnabled rootProject.ext.signConfig.v2SigningEnabled
+            v2SigningEnabled signConfig.v2SigningEnabled
         }
     }
 
     buildTypes {
         release {
-            minifyEnabled rootProject.ext.releaseConfig.minifyEnabled
-            debuggable rootProject.ext.releaseConfig.debuggable
+            minifyEnabled releaseConfig.minifyEnabled
+            debuggable releaseConfig.debuggable
             signingConfig signingConfigs.config
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
@@ -100,13 +100,13 @@ android.applicationVariants.all { variant ->
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
 
-    compile rootProject.ext.dep.constraint_layout
+    compile dep.constraint_layout
 
-    compile(rootProject.ext.dep.atlas_core) {
+    compile(dep.atlas_core) {
         transitive = true
     }
-    compile rootProject.ext.dep.atlas_update
-    compile rootProject.ext.dep.fastjson
+    compile dep.atlas_update
+    compile dep.fastjson
 
     //项目依赖
     compile project(':lib-base')

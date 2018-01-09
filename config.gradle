@@ -25,7 +25,7 @@ ext {
             DEBUG_MODE     : "false"
     ]
 
-    android = [
+    androidConfig = [
             compileSdkVersion: 25,
             buildToolsVersion: '25.0.0',
             applicationId    : 'com.omd',
