@@ -182,3 +182,10 @@ publishing {
 project.afterEvaluate {
     disableDebugBuild()
 }
+
+apply plugin: 'com.hejie.gradle'
+
+testTask {
+    enable = false
+    text = "hejie"
+}

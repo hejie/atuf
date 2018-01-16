@@ -12,6 +12,7 @@ buildscript {
 
     dependencies {
         classpath "com.taobao.android:atlasplugin:2.3.3.rc41"
+        classpath "com.hejie.gradle:plugin:1.0.0"
     }
 
 }
