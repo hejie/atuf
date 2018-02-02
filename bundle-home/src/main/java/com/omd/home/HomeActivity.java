@@ -1,6 +1,7 @@
 package com.omd.home;
 
 import android.os.Bundle;
+import android.taobao.atlas.runtime.RuntimeVariables;
 
 import com.omd.base.BaseActivity;
 

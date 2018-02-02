@@ -16,7 +16,6 @@ import org.osgi.framework.BundleException;
 import java.io.File;
 
 
-
 public class AppApplication extends Application {
 
     @Override
@@ -33,13 +32,13 @@ public class AppApplication extends Application {
 
                     //远程bundle
                     Activity activity = ActivityTaskMgr.getInstance().peekTopActivity();
-                    File remoteBundleFile = new File(activity.getExternalCacheDir(),"lib" + bundleName.replace(".","_") + ".so");
+                    File remoteBundleFile = new File(activity.getExternalCacheDir(), "lib" + bundleName.replace(".", "_") + ".so");
 
                     String path = "";
-                    if (remoteBundleFile.exists()){
+                    if (remoteBundleFile.exists()) {
                         path = remoteBundleFile.getAbsolutePath();
-                    }else {
-                        Toast.makeText(activity, " 远程bundle不存在，请确定 : " + remoteBundleFile.getAbsolutePath() , Toast.LENGTH_LONG).show();
+                    } else {
+                        Toast.makeText(activity, " 远程bundle不存在，请确定 : " + remoteBundleFile.getAbsolutePath(), Toast.LENGTH_LONG).show();
                         return intent;
                     }
 
@@ -48,7 +47,7 @@ public class AppApplication extends Application {
                     try {
                         Atlas.getInstance().installBundle(info.packageName, new File(path));
                     } catch (BundleException e) {
-                        Toast.makeText(activity, " 远程bundle 安装失败，" + e.getMessage() , Toast.LENGTH_LONG).show();
+                        Toast.makeText(activity, " 远程bundle 安装失败，" + e.getMessage(), Toast.LENGTH_LONG).show();
                         e.printStackTrace();
                     }
 

@@ -110,6 +110,7 @@ dependencies {
 
     //项目依赖
     compile project(':lib-base')
+    bundleCompile project(':bundle-public')
     bundleCompile project(':bundle-home')
     bundleCompile project(':bundle-login')
 }

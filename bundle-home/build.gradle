@@ -32,7 +32,12 @@ android {
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
 
-    providedCompile dep.atlas_core
-    //依赖lib中间bundle
     providedCompile project(':lib-base')
+    providedCompile project(':bundle-public')
+
+    providedCompile dep.atlas_core
+
+
+    //依赖lib中间bundle
+
 }

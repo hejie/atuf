@@ -1,1 +1,1 @@
-include ':app', ':bundle-login', ':lib-base', ':bundle-home'
+include ':app', ':bundle-login', ':lib-base', ':bundle-home', ':bundle-public'

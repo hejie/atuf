@@ -1,27 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <Button
-        android:layout_width="match_parent"
+    <TextView
+        android:id="@+id/text"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:onClick="remote"
-        android:text="远程bundle" />
+        android:layout_gravity="center"
+        android:text="Tab" />
+
 
     <Button
+        android:id="@+id/local"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:onClick="local"
         android:text="本地bundle" />
 
     <Button
+        android:id="@+id/remote"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:onClick="update"
+        android:text="远程bundle" />
+
+    <Button
+        android:id="@+id/update"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:text="更新补丁" />
 
 </LinearLayout>

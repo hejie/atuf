@@ -7,7 +7,7 @@ atlas {
 }
 
 group = BUNDLE_GROUP_ID
-version = LOGIN_VERSION
+version = PUBLIC_VERSION
 
 android {
     compileSdkVersion androidConfig.compileSdkVersion
@@ -18,24 +18,19 @@ android {
         targetSdkVersion androidConfig.targetSdkVersion
         versionCode androidConfig.versionCode
         versionName version
-
         testInstrumentationRunner androidConfig.testRunner
 
     }
+
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
 }
 
 dependencies {
-    compile fileTree(include: ['*.jar'], dir: 'libs')
-
-    providedCompile project(':lib-base')
-    providedCompile project(':bundle-public')
-
-    providedCompile dep.atlas_core
-
+    compile fileTree(dir: 'libs', include: ['*.jar'])
 }
